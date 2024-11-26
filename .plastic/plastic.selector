@@ -1,0 +1,4 @@
+repository "Laberinto_ID@Miguelit011@cloud"
+  path "/"
+    br "/main"
+    co "/main"
