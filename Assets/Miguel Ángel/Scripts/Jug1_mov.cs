@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     public AudioClip shootSound; // Clip de audio para el disparo
     private AudioSource audioSource; // Referencia al AudioSource
 
+    private Vector3 startPosition; // Almacena la posición inicial del jugador
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -26,6 +28,9 @@ public class PlayerController : MonoBehaviour
         {
             audioSource = gameObject.AddComponent<AudioSource>();
         }
+
+        // Guardar la posición inicial
+        startPosition = transform.position;
     }
 
     void FixedUpdate()
@@ -74,9 +79,18 @@ public class PlayerController : MonoBehaviour
         // Verifica si el jugador ha chocado con un proyectil
         if (collision.gameObject.CompareTag("Projectile"))
         {
-            SceneManager.LoadScene("GanaAzul");
+            // Restablecer la posición inicial
+            transform.position = startPosition;
+
+            // Detener el movimiento del jugador
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
         }
 
+        // Verifica si el jugador ha alcanzado la meta
         if (collision.gameObject.CompareTag("Meta"))
         {
             SceneManager.LoadScene("GanaRojo");
